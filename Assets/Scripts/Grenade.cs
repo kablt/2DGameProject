@@ -10,10 +10,10 @@ public class Grenade : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Explonsion());
+        StartCoroutine(Explosion());
     }
 
-    IEnumerator Explonsion()
+    IEnumerator Explosion()
     {
         yield return new WaitForSeconds(3);
         meshObj.SetActive(false);
