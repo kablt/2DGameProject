@@ -2,6 +2,7 @@ using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -13,6 +14,7 @@ public class Player : MonoBehaviour
     public GameObject[] weapons;
     public bool[] hasWeapons;
     public GameObject[] grenades;
+    public GameObject ThrowGrenade;
     public int hasGrenades;
     public Camera followcamera;
 
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
     bool wDown;
     bool jDown;
     bool fDown;
+    bool gDown;
     bool rDown;
 
     bool isJump;
@@ -89,6 +92,7 @@ public class Player : MonoBehaviour
         jDown = Input.GetButtonDown("Jump");
         iDown = Input.GetButtonDown("Interation");
         fDown = Input.GetButton("Fire1");
+        gDown = Input.GetButton("Fire2");
         sDown1 = Input.GetButtonDown("Swap1");
         sDown2 = Input.GetButtonDown("Swap2");
         sDown3 = Input.GetButtonDown("Swap3");
@@ -147,6 +151,7 @@ public class Player : MonoBehaviour
         }
     }
 
+
     void Attack()
     {
         if (equipWeapon == null)
@@ -160,6 +165,24 @@ public class Player : MonoBehaviour
             equipWeapon.Use();
             anim.SetTrigger(equipWeapon.type == Weapon.Type.Melee? "doSwing": "doShot");
             fireDelay = 0;
+        }
+    }
+
+    void Grenades()
+    {
+        if (gDown)
+        {
+            Ray ray = followcamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit rayhit;
+            if (Physics.Raycast(ray, out rayhit, 100))
+            {
+                Vector3 nextVec = rayhit.point - transform.position;
+                nextVec.y = 2;
+                GameObject instantGrenade = Instantiate(ThrowGrenade, transform);
+                Rigidbody Grenaderb = instantGrenade.GetComponent<Rigidbody>();
+                Grenaderb.AddForce(nextVec, ForceMode.Impulse);
+                Grenaderb.AddTorque(nextVec, ForceMode.Impulse);
+            }
         }
     }
 
