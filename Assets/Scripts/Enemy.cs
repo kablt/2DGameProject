@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.AI; 
 
 public class Enemy : MonoBehaviour
 {
@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public int cureHealth;
     public Transform target;
     public BoxCollider mealarea;
+    public GameObject bullet;
     public bool isChase;
     public bool isAttack;
 
@@ -73,8 +74,8 @@ public class Enemy : MonoBehaviour
                 targetRange = 12f;
                 break;
             case Type.C:
-                targetRadius = 1.5f;
-                targetRange = 3f;
+                targetRadius = 0.5f;
+                targetRange = 25f;
                 break;
         }
 
@@ -116,7 +117,11 @@ public class Enemy : MonoBehaviour
 
                 break;
             case Type.C:
-
+                yield return new WaitForSeconds(0.5f);
+                GameObject instantBullet = Instantiate(bullet, transform.position, transform.rotation);
+               Rigidbody rigidBullet = instantBullet.GetComponent<Rigidbody>();
+                rigidBullet.velocity = transform.forward * 20;
+                yield return new WaitForSeconds(2f);
                 break;
         }
         isAttack = false;
