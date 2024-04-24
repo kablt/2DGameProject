@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6745214495508196123}
   - component: {fileID: 5282047379644037633}
   - component: {fileID: 3884690061866883218}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mesh Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,8 @@ GameObject:
   - component: {fileID: 3625681863261352064}
   - component: {fileID: 4018339403069089094}
   - component: {fileID: 2728207577869510798}
-  m_Layer: 0
+  - component: {fileID: 5230143227844265233}
+  m_Layer: 8
   m_Name: ThrowGrenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +267,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6177172035074468624}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c236d734764d54c47af7a80d0b4ed770, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -280,6 +281,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.8
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5230143227844265233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6177172035074468624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 331ed71c1350a164f804f6474a433d5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshObj: {fileID: 345643795605558495}
+  effectObj: {fileID: 5176165533029254428}
+  rb: {fileID: 4018339403069089094}
 --- !u!1001 &5900990519294828893
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -291,6 +307,10 @@ PrefabInstance:
     - target: {fileID: 1599315238913598529, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}
       propertyPath: m_Name
       value: Grenade Explosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 1599315238913598529, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1599315238913598529, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}
       propertyPath: m_IsActive
@@ -336,6 +356,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3487559507645470289, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4824182400241798983, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
@@ -345,6 +369,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}
+--- !u!1 &5176165533029254428 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1599315238913598529, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}
+  m_PrefabInstance: {fileID: 5900990519294828893}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9221400348961996438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3322664071572938699, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}

@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     bool isFireReady= true;
     bool isreload;
     bool isBorder;
+    bool isDamage;
 
     bool sDown1;
     bool sDown2;
@@ -49,6 +50,7 @@ public class Player : MonoBehaviour
     Vector3 moveVec;
     Vector3 dodgeVec;
     Animator anim;
+    MeshRenderer[] meshs;
 
     GameObject nearObject;
     Weapon equipWeapon;
@@ -62,6 +64,7 @@ public class Player : MonoBehaviour
         //<>안에 접근할 컴포넌트 이름을 넣어준다.
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
+        meshs = GetComponentsInChildren<MeshRenderer>();
 
     }
     // Start is called before the first frame update
@@ -80,6 +83,7 @@ public class Player : MonoBehaviour
         Dodge();
         Interation();
         Swap();
+        Grenade();
         Attack();
         Reload();
     }
@@ -92,7 +96,7 @@ public class Player : MonoBehaviour
         jDown = Input.GetButtonDown("Jump");
         iDown = Input.GetButtonDown("Interation");
         fDown = Input.GetButton("Fire1");
-        gDown = Input.GetButton("Fire2");
+        gDown = Input.GetButtonDown("Fire2");
         sDown1 = Input.GetButtonDown("Swap1");
         sDown2 = Input.GetButtonDown("Swap2");
         sDown3 = Input.GetButtonDown("Swap3");
@@ -102,7 +106,7 @@ public class Player : MonoBehaviour
     void Move()
     {
         moveVec = new Vector3(hAxis, 0, vAxis).normalized;
-
+        rb.velocity = Vector3.zero;
         if (isDodge)
         {
             moveVec = dodgeVec;
@@ -168,20 +172,28 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Grenades()
+    void Grenade()
     {
-        if (gDown)
+        if(hasGrenades ==0)
+        {
+            return;
+        }
+        if (gDown && !isreload && !isSwap)
         {
             Ray ray = followcamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit rayhit;
             if (Physics.Raycast(ray, out rayhit, 100))
             {
                 Vector3 nextVec = rayhit.point - transform.position;
-                nextVec.y = 2;
-                GameObject instantGrenade = Instantiate(ThrowGrenade, transform);
+                nextVec.y = 10;
+
+                GameObject instantGrenade = Instantiate(ThrowGrenade, transform.position , transform.rotation);
                 Rigidbody Grenaderb = instantGrenade.GetComponent<Rigidbody>();
                 Grenaderb.AddForce(nextVec, ForceMode.Impulse);
-                Grenaderb.AddTorque(nextVec, ForceMode.Impulse);
+                Grenaderb.AddTorque(Vector3.back*10, ForceMode.Impulse);
+
+                hasGrenades --;
+                grenades[hasGrenades].SetActive(false);
             }
         }
     }
@@ -285,6 +297,7 @@ public class Player : MonoBehaviour
     {
         rb.angularVelocity = Vector3.zero;
     }
+
     void StopToWall()
     {
         Debug.DrawRay(transform.position, transform.forward * 5, Color.green);
@@ -344,6 +357,30 @@ public class Player : MonoBehaviour
             }
             Destroy(other.gameObject);
         }
+        else if(other.tag == "EnemyBullet")
+        {
+            if(!isDamage)
+            {
+            Bullet enemyBullet = other.GetComponent<Bullet>();
+            health -= enemyBullet.damage;
+            StartCoroutine(OnDamage());
+            }
+        }
+    }
+
+    IEnumerator OnDamage()
+    {
+        isDamage = true;
+        foreach(MeshRenderer mesh in meshs)
+        {
+            mesh.material.color = Color.red;
+        }
+        yield return new WaitForSeconds(1f);
+        foreach (MeshRenderer mesh in meshs)
+        {
+            mesh.material.color = Color.white;
+        }
+        isDamage = false;
     }
 
     void OnTriggerStay(Collider other)

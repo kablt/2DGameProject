@@ -6,7 +6,7 @@ public class Grenade : MonoBehaviour
 {
     public GameObject meshObj;
     public GameObject effectObj;
-    Rigidbody rb;
+    public Rigidbody rb;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,10 +16,19 @@ public class Grenade : MonoBehaviour
     IEnumerator Explosion()
     {
         yield return new WaitForSeconds(3);
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
         meshObj.SetActive(false);
         effectObj.SetActive(true);
-        rb = GetComponent<Rigidbody>();
-        rb.AddExplosionForce(100,Vector3.up,7f);
+
+        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, 15, Vector3.up ,0f, LayerMask.GetMask("Enemy")); 
+
+        foreach(RaycastHit hitObj in rayHits)
+        {
+            hitObj.transform.GetComponent<Enemy>().HitByGrenade(transform.position);
+        }
+
+        Destroy(gameObject, 5);
     }
    
 
