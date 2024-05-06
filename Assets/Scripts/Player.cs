@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public int ammo;
     public int coin;
     public int health;
+    public int score;
 
     public int maxammo;
     public int maxcoin;
@@ -54,7 +55,7 @@ public class Player : MonoBehaviour
     MeshRenderer[] meshs;
 
     GameObject nearObject;
-    Weapon equipWeapon;
+    public Weapon equipWeapon;
     int equipWeaponIndex=-1;
     float fireDelay;
 
@@ -66,6 +67,9 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponentInChildren<Animator>();
         meshs = GetComponentsInChildren<MeshRenderer>();
+
+        //PlayerPrefs.SetInt("MaxScore", 112500);
+        Debug.Log(PlayerPrefs.GetInt("MaxScore"));
 
     }
     // Start is called before the first frame update
